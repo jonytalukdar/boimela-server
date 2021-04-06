@@ -20,7 +20,15 @@ const client = new MongoClient(uri, {
 });
 client.connect((err) => {
   const booksCollection = client.db('boiMela').collection('books');
-  console.log('database connected successfully');
+  // console.log('database connected successfully');
+  app.post('/addBook', (req, res) => {
+    const newBook = req.body;
+    console.log('adding new book', newBook);
+    booksCollection.insertOne(newBook).then((result) => {
+      console.log('insertCount', result.insertedCount);
+      res.send(result.insertedCount > 0);
+    });
+  });
 });
 
 app.listen(port, () => {
