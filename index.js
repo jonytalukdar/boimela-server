@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 const MongoClient = require('mongodb').MongoClient;
+const { ObjectID } = require('bson');
 const port = process.env.PORT || 5000;
 
 app.use(bodyParser.json());
@@ -20,13 +21,14 @@ const client = new MongoClient(uri, {
 });
 client.connect((err) => {
   const booksCollection = client.db('boiMela').collection('books');
-  // console.log('database connected successfully');
 
-  // app.get('books', (req, res) => {
-  //   booksCollection.find().toArray((err, items) => {
-  //     console.log('from database', items);
-  //   });
-  // });
+  app.get('/books/:id', (req, res) => {
+    booksCollection
+      .find({ _id: ObjectID(req.params.id) })
+      .toArray((err, booksItems) => {
+        res.send(booksItems);
+      });
+  });
 
   app.get('/books', (req, res) => {
     booksCollection.find().toArray((err, items) => {
