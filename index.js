@@ -45,6 +45,14 @@ client.connect((err) => {
       res.send(result.insertedCount > 0);
     });
   });
+
+  app.post('/checkout', (req, res) => {
+    const newChecking = req.body;
+    booksCollection.insertOne(newChecking).then((result) => {
+      console.log(result);
+    });
+    console.log(newChecking);
+  });
 });
 
 app.listen(port, () => {
