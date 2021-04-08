@@ -21,6 +21,7 @@ const client = new MongoClient(uri, {
 });
 client.connect((err) => {
   const booksCollection = client.db('boiMela').collection('books');
+  const booksOrders = client.db('booksOrder').collection('order');
 
   app.get('/books/:id', (req, res) => {
     booksCollection
@@ -48,7 +49,7 @@ client.connect((err) => {
 
   app.post('/checkout', (req, res) => {
     const newChecking = req.body;
-    booksCollection.insertOne(newChecking).then((result) => {
+    booksOrders.insertOne(newChecking).then((result) => {
       console.log(result);
     });
     console.log(newChecking);
